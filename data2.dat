@@ -1,0 +1,65 @@
+﻿/*Sección de datos*/
+
+data;
+
+
+/*Sets*/
+
+
+#Conjunto de paradas
+set Paradas := o s1 s2 s3 d; 
+
+#Conjunto de alumnos
+set Alumnos := A1 A2 A3 A4 A5 A6 A7 A8; 
+
+
+/*Parámetros*/
+
+
+/*Matriz que contiene las distancias entre paradas*/
+param distancia :   o  s1  s2  s3   d:=
+                o  99   8  10  10  99 
+                s1  8  99   3   7   6
+                s2 10   3  99   5   7
+                s3 10   7   5  99   4
+                d  99   6   7   4  99;
+
+/*Matriz que contiene información acerca de los alumnos que son hermanos*/
+param hermanos :  A1 A2 A3 A4 A5 A6 A7 A8 :=
+               A1  0  0  0  0  0  0  0  0
+               A2  0  0  0  0  0  0  0  0
+               A3  0  0  0  0  0  0  0  0
+               A4  0  0  0  0  1  0  0  0
+               A5  0  0  0  1  0  0  0  0
+               A6  0  0  0  0  0  0  0  0
+               A7  0  0  0  0  0  0  0  0
+               A8  0  0  0  0  0  0  0  0;
+
+
+/*Matriz que indica a qué paradas se puede asignar a los alumnos sin asignar*/
+param parada_asignable :    o s1 s2 s3  d :=
+                         A1 0  1  0  0  0
+                         A2 0  1  0  0  0
+                         A3 0  1  0  0  0
+                         A4 0  1  1  1  0
+                         A5 0  1  1  1  0
+                         A6 0  0  0  1  0
+                         A7 0  0  0  1  0
+                         A8 0  0  0  1  0;
+
+#Escalar que contiene la cantidad de alumnos a recoger
+param gente_total := 8; 
+
+#Escalar que contiene el precio por cada autobus
+param precio_por_autobus  := 120; 
+
+#Escalar que contiene el precio por kilometro
+param precio_por_km := 5; 
+
+#Escalar que contiene la capacidad máxima de cada autobus
+param capacidad_autobus := 4; 
+
+#Escalar que almacena el número de autobuses disponibles
+param n_autobuses := 3;
+
+end;

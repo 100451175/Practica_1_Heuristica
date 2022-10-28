@@ -35,11 +35,11 @@ minimize coste: precio_por_autobus*(sum{j in Paradas} x["o",j]) + precio_por_km*
 
 /*Restricciones */
 
-#A la paradas llega una única ruta
-s.t. rutas_a{j in Paradas: j != "o" && j != "d"}  : sum{i in Paradas} x[i, j] = 1; 
+#A la paradas llega como máximo un ruta
+s.t. rutas_a{j in Paradas: j != "o" && j != "d"}  : sum{i in Paradas} x[i, j] <= 1; 
 
-#De la paradas sale una única ruta
-s.t. rutas_de{i in Paradas: i != "o" && i != "d"}: sum{j in Paradas} x[i, j] = 1; 
+#De la paradas sale como máximo una ruta
+s.t. rutas_de{i in Paradas: i != "o" && i != "d"}: sum{j in Paradas} x[i, j] <= 1; 
 
 #Al origen no llegan rutas
 s.t. a_o_no_llegan : sum{i in Paradas} x[i, "o"] = 0;
@@ -48,10 +48,7 @@ s.t. a_o_no_llegan : sum{i in Paradas} x[i, "o"] = 0;
 s.t. de_d_no_salen : sum{j in Paradas} x["d", j] = 0;
 
 #Los buses que salen del origen están restringidos al número total de autobuses
-s.t. max_rutas_o : sum{j in Paradas} x["o", j] <= n_autobuses; 
-
-#Los buses que llegan al destino están restringidos al número total de autobuses
-s.t. max_rutas_d : sum{i in Paradas} x[i, "d"] <= n_autobuses; 
+s.t. max_rutas_o : sum{j in Paradas} x["o", j] <= n_autobuses;  
 
 #El número de buses que sale del origen es el mismo que llega al destino
 s.t. rutas_o_d : sum{j in Paradas} x["o", j] = sum{i in Paradas} x[i, "d"]; 
@@ -60,7 +57,7 @@ s.t. rutas_o_d : sum{j in Paradas} x["o", j] = sum{i in Paradas} x[i, "d"];
 s.t. rutas_entran_y_salen{p in Paradas: p != "o" && p != "d"} : sum{j in Paradas} x[p, j] = sum{i in Paradas} x[i, p]; 
 
 #El flujo que sale de cada parada es el flujo que entra en ella más la gente esperando.
-s.t. flujo_entra_sale{i in Paradas: i != "o" && i != "d"}: sum{j in Paradas} f[i, j] = gente[i] + sum{j in Paradas} f[j, i]; 
+s.t. flujo_entra_sale{p in Paradas: p != "o" && p != "d"}: sum{j in Paradas} f[p, j] = gente[p] + sum{i in Paradas} f[i, p]; 
 
 #El flujo que llega al destino es la suma de la gente esperando
 s.t. flujo_final : sum{i in Paradas} f[i, "d"] = sum{i in Paradas} gente[i];  
